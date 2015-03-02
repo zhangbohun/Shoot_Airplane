@@ -11,7 +11,7 @@ from sys import exit
 #初始化窗口
 pygame.init()
 pygame.display.set_caption('打打打打打飞机')#设置窗口标题
-screen=pygame.display.set_mode((370,600))
+screen=pygame.display.set_mode((370,600),0,32)
 pygame.mouse.set_visible(False)#隐藏光标
 
 #加载素材
@@ -19,7 +19,7 @@ pygame.mouse.set_visible(False)#隐藏光标
 boom1=pygame.image.load("resources/image/boom1.png")
 boom2=pygame.image.load("resources/image/boom2.png")
 bullet=pygame.image.load("resources/image/bullet.png")
-plane = pygame.image.load("resources/image/plane.png")
+plane = pygame.image.load("resources/image/plane.png").convert_alpha()
 enemy = pygame.image.load("resources/image/enemy.png")
 pygame.display.set_icon(plane)#顺便设置窗口icon
 background1 = pygame.image.load("resources/image/bg_01.png")
@@ -91,7 +91,7 @@ while True:
             
     #敌机生成，移动，消失
     if i%100==0:
-        enemies.append([random.choice(range(0,370-enemy.get_width())),-enemy.get_width() / 2])
+        enemies.append([random.randint(0,370-enemy.get_width()),-enemy.get_width() / 2])
         for place in enemies:
             if place[1]>=600:
                 enemies.remove(place)
@@ -137,9 +137,9 @@ while True:
             for place in enemies:      
                 screen.blit(enemy, (place[0],place[1] ))   
             #显示最终得分
-            text = font.render("Final Score: %d" % score, 1, (0, 0, 0))
+            text = font.render("Final Score: %d" % score, True, (0, 0, 0))
             screen.blit(text, (78, 270)) 
-            text = font.render("Press Right Button to Restart", 1, (0, 0, 0))
+            text = font.render("Press Right Button to Restart", True, (0, 0, 0))
             screen.blit(text, (15, 320)) 
             pygame.display.update()#显示重绘
             
@@ -182,11 +182,11 @@ while True:
         if game_over==True:
             x,y=185, 550#重置飞机位置
             game_over=False
-            text = font.render("Press Left Button to Start", 1, (0, 0, 0))
+            text = font.render("Press Left Button to Start", True, (0, 0, 0))
             screen.blit(text, (35, 300)) 
         else:
             x,y=pygame.mouse.get_pos()#保存飞机位置
-            text = font.render("Press Left Button to Continue", 1, (0, 0, 0))
+            text = font.render("Press Left Button to Continue", True, (0, 0, 0))
             screen.blit(text, (10, 300)) 
         pygame.display.update()#更新重绘
         
@@ -201,7 +201,7 @@ while True:
                 pygame.mouse.set_pos(x, y)#鼠标返回暂停前位置
                 break
                       
-    text = font.render(u"%d" % score, 1, (0, 0, 0))
+    text = font.render(u"%d" % score, True, (0, 0, 0))
     screen.blit(text, (50, 0))       
     #检测是否结束        
     for event in pygame.event.get():
